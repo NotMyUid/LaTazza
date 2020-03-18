@@ -51,6 +51,11 @@ public class Cassa {
 	public String toString() {
 		return String.format(Locale.US, "%,.2f", (double)disponibilita.getValore() / 100);
 	}
+	
+	public String print() {
+		return "CASSA\n"+disponibilita.getValore() + "\n\n";
+	}
+
 
 	public void print(Connection c) throws SQLException {
 		String query = "UPDATE LATAZZASCHEMA.CASSA SET euro = '"+disponibilita.getValore()/100+"', centesimi = '"+disponibilita.toString().substring(disponibilita.toString().length()-4, disponibilita.toString().length()-2)+"'";

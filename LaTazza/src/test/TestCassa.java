@@ -2,24 +2,35 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import application.controller.DataBaseConnection;
 import application.model.Cassa;
 import application.utils.Euro;
 
 
 
 public class TestCassa {
-
+	static DataBaseConnection conn;
 	Cassa cassa;
+	
+	@BeforeAll
+	static void connect() throws ClassNotFoundException, SQLException {
+		conn = new DataBaseConnection();
+		conn.initDataBase();
+	}
+	
+	@AfterAll
+	static void close() throws SQLException {
+		conn.closeDataBase();
+	}
 	
 	@BeforeEach
 	void setUp() {
@@ -73,33 +84,12 @@ public class TestCassa {
 	
 	
 	@Test 
-	void testLoad() {
-		String str="";
-		try {
-			FileWriter fileWriter = new FileWriter("res/pippo.txt", false);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
-			printWriter.print(str=cassa.print());
-			printWriter.close();
-		} catch (IOException e) {
-		}
+	void testLoad() throws SQLException {
+		cassa.load(conn.getConnection());
+		String str=cassa.print();
 		cassa=new Cassa();
-		cassa.load("res/pippo.txt");
-		new File("res/pippo.txt").delete();
+		cassa.load(conn.getConnection());
 		assertEquals(cassa.print(),str);
-	}
-	
-	@Test
-	void testLoadFileNotExists() {
-		cassa.load("res/pippo.txt");
-		assertTrue(cassa.getDisponibilita().ugualeA(new Euro(2000)));
-	}
-	
-	@Test
-	void testLoadFileWithNoCassa() {
-		File file = new File("res/test.txt");
-		cassa.load("res/test.txt");
-        file.delete();
-		assertTrue(cassa.getDisponibilita().ugualeA(new Euro(2000)));
 	}
 	
 }

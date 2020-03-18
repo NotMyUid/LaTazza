@@ -2,17 +2,17 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.Date;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import application.controller.DataBaseConnection;
 import application.model.utenti.Persona;
 import application.model.vendite.Vendita;
 import application.model.vendite.Vendite;
@@ -20,9 +20,20 @@ import application.utils.TipoCialda;
 
 
 public class TestVendite {
-
+	static DataBaseConnection conn;
 	Vendite vendite, venditeEmpty;
 	Date actualDate = new Date();
+	
+	@BeforeAll
+	static void connect() throws ClassNotFoundException, SQLException {
+		conn = new DataBaseConnection();
+		conn.initDataBase();
+	}
+	
+	@AfterAll
+	static void close() throws SQLException {
+		conn.closeDataBase();
+	}
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -30,7 +41,7 @@ public class TestVendite {
 		vendite = new Vendite();
 		vendite.getVendite().add(new Vendita (new Persona("Siji"), 100, TipoCialda.fromString("camomilla"), true));
 		vendite.getVendite().add(new Vendita(new Persona("Bon"), 150, TipoCialda.fromString("cioccolata"), false, actualDate));
-		vendite.getVendite().add(new Vendita (new Persona("Roll"), 15, TipoCialda.fromString("caff√®"), false));
+		vendite.getVendite().add(new Vendita (new Persona("Roll"), 15, TipoCialda.fromString("caffË"), false));
 	}
 	
 	@Test
@@ -44,25 +55,14 @@ public class TestVendite {
 	}
 	
 	@Test 
-	void testLoad() {
-		String str="";
-		try {
-			FileWriter fileWriter = new FileWriter("res/pluto.txt", false);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
-			printWriter.print(str=vendite.print());
-			printWriter.close();
-		} catch (IOException e) {
-		}
-		venditeEmpty.load("res/pluto.txt");
-		new File("res/pluto.txt").delete();
-		assertTrue(vendite.print().equals(str));
-	}
-	
-	@Test
-	void testLoadFileNotExists() {
-		int oldSize = vendite.getVendite().size();
-		vendite.load("res/test5.txt");
-		assertEquals(vendite.getVendite().size(),oldSize);
+	void testLoad() throws SQLException {
+		vendite.print(conn.getConnection());
+		vendite=new Vendite();
+		vendite.load(conn.getConnection());
+		String str=vendite.print();
+		vendite=new Vendite();
+		vendite.load(conn.getConnection());
+		assertEquals(vendite.print(),str);
 	}
 	
 	@ParameterizedTest
@@ -91,8 +91,8 @@ public class TestVendite {
 	
 	@Test
 	void testPrint() {
-		venditeEmpty.addVendita(new Persona("NewAdded"), 75, TipoCialda.fromString("caff√®Arabica"), true, actualDate);
+		venditeEmpty.addVendita(new Persona("NewAdded"), 75, TipoCialda.fromString("caffËArabica"), true, actualDate);
 		assertEquals(venditeEmpty.print(),	"VENDITE\n" +
-											actualDate.getTime() + " NewAdded 75 caff√®Arabica true\n\n");
+											actualDate.getTime() + " NewAdded 75 caffËArabica true\n\n");
 	}
 }

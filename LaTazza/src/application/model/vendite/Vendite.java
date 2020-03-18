@@ -85,6 +85,13 @@ public class Vendite {
         return extracted;
 	}
 	
+	public String print() {
+		String venditeString="VENDITE\n";
+		for(Vendita vend : vendite)
+			venditeString+=vend.getEpoch()+" "+vend.getCliente().getNome()+" "+vend.getQuantita()+" "+vend.getTipoCialda().toString()+" "+vend.isContanti()+'\n';
+		return venditeString+='\n';
+	}
+	
 	public void print(Connection c) throws SQLException {
 		String query;
 		Statement stmt = c.createStatement();
@@ -101,7 +108,7 @@ public class Vendite {
 				query = "MERGE into LATAZZASCHEMA.compra_dipendente values ('"+Nome+"','"+Cialda+"',"+qta+",'"+Epoch+"',"+Contanti+")";
 			else if (isIn (Visitatori,Nome)) query = "MERGE into LATAZZASCHEMA.compra_visitatore values ('"+Nome+"','"+Cialda+"',"+qta+",'"+Epoch+"',"+Contanti+")";
 			else {
-					query = "INSERT INTO LATAZZASCHEMA.VISITATORE values ('"+Nome+"')";
+					query = "MERGE INTO LATAZZASCHEMA.VISITATORE values ('"+Nome+"')";
 					stmt.executeUpdate(query);
 					query = "MERGE into LATAZZASCHEMA.compra_visitatore values ('"+Nome+"','"+Cialda+"',"+qta+",'"+Epoch+"',"+Contanti+")";
 			}

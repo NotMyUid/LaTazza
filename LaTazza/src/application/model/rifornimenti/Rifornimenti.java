@@ -48,6 +48,12 @@ public class Rifornimenti {
 		return rifornimenti.add(new Rifornimento(numeroScatole, tc));	
 	}
 	
+	public String print() {
+		String rifornimentoString="RIFORNIMENTI\n";
+		for(Rifornimento rif : rifornimenti)
+			rifornimentoString+=String.valueOf(rif.getEpoch())+" "+rif.getNumeroScatole()+" "+rif.getTipoCialda()+'\n';
+		return rifornimentoString+='\n';
+	}
 	
 	public void print(Connection c) throws SQLException {
 		String query;

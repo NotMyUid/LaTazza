@@ -2,22 +2,33 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import application.controller.DataBaseConnection;
 import application.model.utenti.Persona;
 import application.model.utenti.Personale;
 import application.utils.Euro;
 
 
 class TestPersonale {
-
+	static DataBaseConnection conn;
 	Personale personale;
+	
+	@BeforeAll
+	static void connect() throws ClassNotFoundException, SQLException {
+		conn = new DataBaseConnection();
+		conn.initDataBase();
+	}
+	
+	@AfterAll
+	static void close() throws SQLException {
+		conn.closeDataBase();
+	}
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -115,40 +126,14 @@ class TestPersonale {
 	}
 	
 	@Test
-	void testLoad() {
-		for(Persona persona : personale.getPersonale()) {
-			persona.aumentaDebito(new Euro(5));
-			personale.diminuisciDebito(persona,new Euro(3));
-		}
-		String str="";
-		try {
-			FileWriter fileWriter = new FileWriter("res/test.txt", false);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
-			printWriter.print(str=personale.print());
-			printWriter.close();
-		} catch (IOException e) {
-		}
-		personale = new Personale();
-		personale.load("res/test.txt");
-		File file = new File("res/test.txt");
-        file.delete();
+	void testLoad() throws SQLException {
+		personale.print(conn.getConnection());
+		personale=new Personale();
+		personale.load(conn.getConnection());
+		String str=personale.print();
+		personale=new Personale();
+		personale.load(conn.getConnection());
 		assertEquals(personale.print(),str);
-	}
-	
-	@Test
-	void testLoadFileNotExists() {
-		personale = new Personale();
-		personale.load("res/test.txt");
-		assertEquals(personale.getPersonale().size(),0);
-	}
-	
-	@Test
-	void testLoadFileWithNoRifornimenti() {
-		personale = new Personale();
-		File file = new File("res/test.txt");
-		personale.load("res/test.txt");
-        file.delete();
-		assertEquals(personale.getPersonale().size(),0);
 	}
 	
 }

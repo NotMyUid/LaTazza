@@ -1,30 +1,30 @@
 package application.utils;
 
 public enum TipoCialda {
-	caffÃ¨,
-	caffÃ¨Arabica,
-	thÃ¨,
-	thÃ¨Limone,
+	caffè,
+	caffèArabica,
+	thè,
+	thèLimone,
 	cioccolata,
 	camomilla;
 	
 	
 	public static TipoCialda fromString(String str) {
 	    switch(str) {
-	    case "caffÃ¨Arabica":
-	        return TipoCialda.caffÃ¨Arabica;
-	    case "caffÃ¨":
-	        return TipoCialda.caffÃ¨;
+	    case "caffèArabica":
+	        return TipoCialda.caffèArabica;
+	    case "caffè":
+	        return TipoCialda.caffè;
 	    case "camomilla":
 	        return TipoCialda.camomilla;
-	    case "thÃ¨":
-	        return TipoCialda.thÃ¨;
-	    case "thÃ¨Limone":
-	        return TipoCialda.thÃ¨Limone;
+	    case "thè":
+	        return TipoCialda.thè;
+	    case "thèLimone":
+	        return TipoCialda.thèLimone;
 	    case "cioccolata":
 	        return TipoCialda.cioccolata;
 	    default:	
-	    	return TipoCialda.thÃ¨;
+	    	return TipoCialda.thè;
 	    }
 	}
 }

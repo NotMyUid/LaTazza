@@ -2,25 +2,33 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 
-import java.io.File;
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import application.controller.DataBaseConnection;
 import application.model.rifornimenti.Rifornimenti;
 import application.model.rifornimenti.Rifornimento;
 import application.utils.TipoCialda;
 
 class TestRifornimenti {
-	
+	static DataBaseConnection conn;
 	Rifornimenti rifornimenti, rifornimentiEmpty;
 	int size = 10, numScatola = 1;
-	File file = new File("res/test.txt");
 
+	@BeforeAll
+	static void connect() throws ClassNotFoundException, SQLException {
+		conn = new DataBaseConnection();
+		conn.initDataBase();
+	}
+	
+	@AfterAll
+	static void close() throws SQLException {
+		conn.closeDataBase();
+	}
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -47,33 +55,15 @@ class TestRifornimenti {
 	}
 	
 	@Test
-	void testLoad() {
-
+	void testLoad() throws SQLException {
 		rifornimenti.addRifornimento(numScatola, TipoCialda.caffè);
-		String str="";
-		try {
-			FileWriter fileWriter = new FileWriter("res/test.txt", false);
-			PrintWriter printWriter = new PrintWriter(fileWriter);
-			printWriter.print(str=rifornimenti.print());
-			printWriter.close();
-		} catch (IOException e) {
-		}
-		rifornimentiEmpty.load("res/test.txt");
-        file.delete();
-		assertEquals(rifornimentiEmpty.print(),str);
-	}
-	
-	@Test
-	void testLoadFileNotExists() {
-		rifornimentiEmpty.load("res/test5.txt");
-		assertEquals(rifornimentiEmpty.getRifornimenti().size(),0);
-	}
-	
-	@Test
-	void testLoadFileWithNoRifornimenti() {
-		rifornimentiEmpty.load("res/test.txt");
-        file.delete();
-		assertEquals(rifornimentiEmpty.getRifornimenti().size(),0);
+		rifornimenti.print(conn.getConnection());
+		rifornimenti=new Rifornimenti();
+		rifornimenti.load(conn.getConnection());
+		String str=rifornimenti.print();
+		rifornimenti=new Rifornimenti();
+		rifornimenti.load(conn.getConnection());
+		assertEquals(rifornimenti.print(),str);
 	}
 	
 }

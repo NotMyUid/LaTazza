@@ -77,7 +77,7 @@ public class TestEuro {
 
 	@Test
 	void testToString() {
-		assertEquals("42.00â‚¬",firstEuro.toString());
+		assertEquals("42.00 €",firstEuro.toString());
 	}
 	
 	@Test

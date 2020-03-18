@@ -95,6 +95,15 @@ public class Personale {
 		return pagamentiDebito.add(new PagamentoDebito(pers, ammontare));
 	}
 	
+	public String print() {
+		String personaleString="PERSONALE\n";
+		for(Persona pers : personale)
+			personaleString+=pers.toString()+" "+pers.getDebito().getValore()+'\n';
+		String pagamentiDebitiString="PAGAMENTO\n";
+		for(PagamentoDebito pagDeb : pagamentiDebito) 
+			pagamentiDebitiString+=pagDeb.getEpoch()+" "+pagDeb.getPersona()+' '+pagDeb.getAmmontare().getValore()+'\n';
+		return personaleString+='\n'+pagamentiDebitiString+'\n';
+	}
 	
 	public void print(Connection c) throws SQLException {
 		String query;

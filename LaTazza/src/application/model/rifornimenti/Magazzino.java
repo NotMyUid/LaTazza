@@ -13,10 +13,10 @@ public class Magazzino {
 	HashMap<TipoCialda, Integer> mag=new HashMap<TipoCialda,Integer>();
 	
 	public Magazzino() {	
-		mag.put(TipoCialda.caff√®, 0);
-		mag.put(TipoCialda.caff√®Arabica, 0);
-		mag.put(TipoCialda.th√®, 0);
-		mag.put(TipoCialda.th√®Limone, 0);
+		mag.put(TipoCialda.caffË, 0);
+		mag.put(TipoCialda.caffËArabica, 0);
+		mag.put(TipoCialda.thË, 0);
+		mag.put(TipoCialda.thËLimone, 0);
 		mag.put(TipoCialda.cioccolata, 0);
 		mag.put(TipoCialda.camomilla, 0);
 	}
@@ -57,6 +57,12 @@ public class Magazzino {
 		return true;
 	}
 	
+	public String print() {
+		String magString="MAGAZZINO\n";
+		for(TipoCialda tipoCialda : mag.keySet())
+			magString+=tipoCialda.toString()+" "+mag.get(tipoCialda)+'\n';
+		return magString+="\n";
+	}
 	
 	public void print(Connection c) throws SQLException {
 		String query;

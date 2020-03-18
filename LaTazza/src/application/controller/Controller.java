@@ -87,10 +87,10 @@ public class Controller {
 		rifTipoCialdaCB.setItems(obsList);
 		disponibilitaLabel.setText(cassa.toString());
 	
-		cialdeMagTF.put(TipoCialda.caff√®, cialdeCaffeTF);
-		cialdeMagTF.put(TipoCialda.caff√®Arabica, cialdeArabicaTf);
-		cialdeMagTF.put(TipoCialda.th√®, cialdeTheTF);
-		cialdeMagTF.put(TipoCialda.th√®Limone, cialdeTheLimoneTF);
+		cialdeMagTF.put(TipoCialda.caffË, cialdeCaffeTF);
+		cialdeMagTF.put(TipoCialda.caffËArabica, cialdeArabicaTf);
+		cialdeMagTF.put(TipoCialda.thË, cialdeTheTF);
+		cialdeMagTF.put(TipoCialda.thËLimone, cialdeTheLimoneTF);
 		cialdeMagTF.put(TipoCialda.cioccolata, cialdeCioccolatoTF);
 		cialdeMagTF.put(TipoCialda.camomilla, cialdeCamomillaTF);
 		
@@ -127,7 +127,7 @@ public class Controller {
 		}
 		//rimozione persona, se non gia presente
 		if(!personale.addPersona(nome)) {
-			Utils.showMessage(messAggiungiPersona, "red", "Impossibile aggiungere " + nome + " in quanto gi√† presente");
+			Utils.showMessage(messAggiungiPersona, "red", "Impossibile aggiungere " + nome + " in quanto gi‡† presente");
 			aggiungiPersonaleTF.clear();
 			return;
 		}
@@ -176,7 +176,7 @@ public class Controller {
 	    try {
 	      quantita = Integer.parseInt(quantitaCialdeTF.getText());
 	    } catch (NumberFormatException e) {
-	      Utils.resetTextField(quantitaCialdeTF, "Quantit√† cialde");
+	      Utils.resetTextField(quantitaCialdeTF, "Quantit‡† cialde");
 	      Utils.showMessage(messVendita, "red", "Inserire un valore numerico di cialde");
 	      return;
 	    }
@@ -285,7 +285,7 @@ public class Controller {
 		}
 		
 		if(!cassa.effettuaPagamento(new Euro(0,50*numeroScatole*40))) {
-			Utils.showMessage(messRifornimento, "red", "Inserisci una cifra positiva non superiore alla disponibilit√† in cassa");
+			Utils.showMessage(messRifornimento, "red", "Inserisci una cifra positiva non superiore alla disponibilit‡† in cassa");
 			return;
 		}
 		//effettua rifornimento
@@ -366,7 +366,7 @@ public class Controller {
 	
 
 	public void resetVendita() {
-		Utils.resetTextField(quantitaCialdeTF, "Quantit√† cialde");
+		Utils.resetTextField(quantitaCialdeTF, "Quantit‡† cialde");
 		Utils.resetPersonaCB(venditaPersonaleCB, "Nome Persona");
 		Utils.resetTextField(nomeVisitatoreTF, "Nome Visitatore");
 		Utils.resetCialdeCB(venditaTipoCialdaCB);
