@@ -3,9 +3,9 @@ package application;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import DataAccessObject.Database.DataBaseConnection;
+import DataAccessObject.Database.DataBasePopulator;
 import application.controller.Controller;
-import application.controller.DataBaseConnection;
-import application.controller.DataBasePopulator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;

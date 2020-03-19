@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.controller.DataBaseConnection;
+import DataAccessObject.Database.DataBaseConnection;
 import application.model.utenti.Persona;
 import application.model.utenti.Personale;
 import application.utils.Euro;

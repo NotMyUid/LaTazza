@@ -1,10 +1,9 @@
-package application.controller;
+package DataAccessObject.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import application.controller.DataBaseConnection;;
 
 public class DataBasePopulator {
 

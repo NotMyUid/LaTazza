@@ -1,18 +1,18 @@
 package application.model.rifornimenti;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 
+import DataAccessObject.MagazzinoDAO;
 import application.utils.TipoCialda;
 
 public class Magazzino {
-	
-	HashMap<TipoCialda, Integer> mag=new HashMap<TipoCialda,Integer>();
+	private MagazzinoDAO dao;
+	private HashMap<TipoCialda, Integer> mag=new HashMap<TipoCialda,Integer>();
 	
 	public Magazzino() {	
+		dao = new MagazzinoDAO();
 		mag.put(TipoCialda.caffè, 0);
 		mag.put(TipoCialda.caffèArabica, 0);
 		mag.put(TipoCialda.thè, 0);
@@ -23,16 +23,7 @@ public class Magazzino {
 
 
 	public void load(Connection c) throws SQLException {
-		String query = "SELECT * FROM LATAZZASCHEMA.MAGAZZINO";
-		Statement stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        int Numero = 0;
-        String Cialda = "";
-        while(rs.next()) {
-	        Numero = rs.getInt("qta");
-	        Cialda = rs.getString("tipo");
-	        mag.put(TipoCialda.fromString(Cialda), Numero);
-        }   stmt.close();
+		dao.load(c, mag);
 	}
 	
 	
@@ -65,14 +56,7 @@ public class Magazzino {
 	}
 	
 	public void print(Connection c) throws SQLException {
-		String query;
-		Statement stmt = c.createStatement();
-		for(TipoCialda tipoCialda : mag.keySet()) {
-			String Cialda = tipoCialda.toString();
-			int qta = mag.get(tipoCialda);
-			query = "MERGE into LATAZZASCHEMA.MAGAZZINO values ('"+Cialda+"',"+qta+")";
-			stmt.executeUpdate(query);
-		}
+		dao.print(c, mag);
 	}
 	
 }

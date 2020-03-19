@@ -1,32 +1,24 @@
 package application.model;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Locale;
 
+import DataAccessObject.CassaDAO;
 import application.utils.Euro;
 
 public class Cassa {
 
+	private CassaDAO dao;
 	private Euro disponibilita;
 
 	public Cassa() {
+		dao = new CassaDAO();
 		disponibilita = new Euro(0);
 	}
 
 	public void load(Connection c) throws SQLException {
-		String query = "SELECT * FROM LATAZZASCHEMA.CASSA";
-		Statement stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        long Euro = 0;
-        int Cent = 0;
-        while(rs.next()) {
-	        Euro = rs.getLong("euro");
-	        Cent = rs.getInt("centesimi");
-        }   stmt.close();
-        disponibilita=new Euro(Euro,Cent);	
+		disponibilita = dao.load(c);
 	}
 	
 	public boolean riceviPagamento(Euro euro) {
@@ -58,9 +50,7 @@ public class Cassa {
 
 
 	public void print(Connection c) throws SQLException {
-		String query = "UPDATE LATAZZASCHEMA.CASSA SET euro = '"+disponibilita.getValore()/100+"', centesimi = '"+disponibilita.toString().substring(disponibilita.toString().length()-4, disponibilita.toString().length()-2)+"'";
-		Statement stmt = c.createStatement();
-        stmt.executeUpdate(query);
+		dao.print(c,disponibilita);
 	}
 
 }

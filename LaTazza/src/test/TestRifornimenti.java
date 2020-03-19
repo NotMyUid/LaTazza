@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import application.controller.DataBaseConnection;
+import DataAccessObject.Database.DataBaseConnection;
 import application.model.rifornimenti.Rifornimenti;
 import application.model.rifornimenti.Rifornimento;
 import application.utils.TipoCialda;

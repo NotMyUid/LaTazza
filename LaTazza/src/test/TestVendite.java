@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import application.controller.DataBaseConnection;
+import DataAccessObject.Database.DataBaseConnection;
 import application.model.utenti.Persona;
 import application.model.vendite.Vendita;
 import application.model.vendite.Vendite;
